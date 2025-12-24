@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find my_omni_robot)/urdf/omni_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find my_omni_robot)/urdf/lidar.urdf.xacro"/>
+  <xacro:include filename="$(find my_omni_robot)/urdf/camera.urdf.xacro"/>
+  <xacro:include filename="$(find my_omni_robot)/urdf/imu.urdf.xacro"/>
+  <xacro:include filename="$(find my_omni_robot)/urdf/arm.urdf.xacro"/>
+  <xacro:include filename="$(find my_omni_robot)/urdf/gripper.urdf.xacro"/>
+
+  <xacro:macro name="base_link" params="parent xyz rpy">
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://my_omni_robot/meshes/base_link.dae" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://my_omni_robot/meshes/base_link.stl" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="3.0" />
+        <inertia 
+          ixx="0.05" ixy="0.0" ixz="0.0"
+          iyy="0.05" iyz="0.0"
+          izz="0.08"/>
+      </inertial>
+    </link>
+
+    <joint name="base_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="base_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+
+    <!-- 4 Omni Wheels -->
+    <xacro:omni_wheel parent="base_link" suffix="1" xyz="0.0656 -0.0656 0.0145" rpy="1.5708 0.0 0.7854"/>
+    <xacro:omni_wheel parent="base_link" suffix="2" xyz="0.0656 0.0656 0.0145" rpy="1.5708 0.0 2.3562"/>
+    <xacro:omni_wheel parent="base_link" suffix="3" xyz="-0.0656 0.0656 0.0145" rpy="1.5708 0.0 -2.3562"/>
+    <xacro:omni_wheel parent="base_link" suffix="4" xyz="-0.0656 -0.0656 0.0145" rpy="1.5708 0.0 -0.7854"/>
+
+    <!-- Sensors -->
+    <xacro:lidar parent="base_link" suffix="1" xyz="0.0 0.0 0.1" rpy="0 0 0"/>
+    <xacro:camera parent="base_link" suffix="1" xyz="0.1 0.0 0.05" rpy="0 0 0"/>
+    <xacro:imu parent="base_link" suffix="1" xyz="0 0 0" rpy="0 0 0"/>
+
+    <!-- 6-DOF Arm mounted on top of base -->
+    <xacro:arm parent="base_link" xyz="0 0 0.09" rpy="0 0 0"/>
+    
+    <!-- Gripper attached to end of arm -->
+    <xacro:gripper parent="end_effector_link"/>
+
+  </xacro:macro>
+</robot>

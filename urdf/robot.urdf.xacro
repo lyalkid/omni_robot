@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot name="my_omni_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find my_omni_robot)/urdf/base_link.urdf.xacro" />
+  <xacro:include filename="$(find my_omni_robot)/urdf/gazebo_plugins.urdf.xacro" />   
+  <xacro:include filename="$(find my_omni_robot)/urdf/ros2_control.urdf.xacro" />
+
+  <link name="base_footprint" />
+
+  <xacro:base_link parent="base_footprint" xyz="0 0 0" rpy="0 0 0" />
+
+</robot>

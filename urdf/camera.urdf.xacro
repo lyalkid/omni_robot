@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="camera" params="suffix parent xyz rpy">
+    <link name="camera_link_${suffix}">
+      <visual>
+        <geometry>
+          <box size="0.03 0.08 0.02"/>
+        </geometry>
+        <material name="camera_black">
+          <color rgba="0.1 0.1 0.1 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.08 0.02"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.1" />
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+      </inertial>
+    </link>
+
+    <joint name="camera_joint_${suffix}" type="fixed">
+      <parent link="${parent}" />
+      <child link="camera_link_${suffix}" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+
+    <gazebo reference="camera_link_${suffix}">
+      <!-- RGB Camera -->
+      <sensor name="camera_${suffix}" type="camera">
+        <gz_frame_id>camera_link_${suffix}</gz_frame_id>
+        <pose>0 0 0 0 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>true</visualize>
+        <topic>camera/image_raw</topic>
+        <camera>
+          <camera_info_topic>camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.5</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>300</far>
+          </clip>
+        </camera>
+      </sensor>
+
+      <!-- Depth Camera (Point Cloud) -->
+      <sensor type="depth_camera" name="depth_camera_${suffix}">
+        <gz_frame_id>camera_link_${suffix}</gz_frame_id>
+        <pose>0 0 0 0 0 0</pose>
+        <topic>depth_camera</topic>
+        <update_rate>10.0</update_rate>
+        <camera name="depth_${suffix}">
+          <camera_info_topic>depth_camera/camera_info</camera_info_topic>
+          <horizontal_fov>1.5</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>10.0</far>
+          </clip>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

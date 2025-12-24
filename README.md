@@ -21,7 +21,7 @@
 
 ```bash
 cd ~/ros2_ws/src
-git clone <your_repo_url> my_omni_robot
+git clone git@github.com:lyalkid/omni_robot.git my_omni_robot
 cd ~/ros2_ws
 rosdep install --from-paths src -i -y
 colcon build --packages-select my_omni_robot

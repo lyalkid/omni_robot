@@ -1,4 +1,4 @@
-# My Omni Robot - Stage 3
+# Omni Robot
 
 4-колесный омнинаправленный робот с 6-DOF манипулятором, Nav2 навигацией, SLAM и MoveIt2.
 
